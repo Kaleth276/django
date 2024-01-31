@@ -1,0 +1,55 @@
+{% extends 'agenda/base.html' %}
+{% load static %}
+{% block titul %}Agendar{% endblock %}
+
+{% block contenedor %}
+<section class="container mt-3 mb-3" style="background-color: #ACB6F9; max-width: 1000px; border-radius: 0.3cm;">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3 p-4">
+            <h1>Formulario Citas</h1>
+            <form action="{% url 'guardar_cita' %}" method="post">
+                {% csrf_token %}
+                {% if id %}
+                    <h1>Editar</h1>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuario</label>
+                    <input type="hidden" name="idCita" value="{{id}}">
+                    <select name="usuario" class="form-select">
+                        {% for usuario in usuarios %}
+                            <option value="{{usuario.idUsuario}}" {% if data.usuarios.idUsuario == usuario.idUsuario %}selected{% endif %}>{{usuario.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" value="{{data.fecha|date:'Y-m-d'}}">
+                </div>
+                <div class="mb-3">
+                    <label for="lugar" class="form-label">Lugar</label>
+                    <input type="text" class="form-control" name="lugar" value="{{data.lugar}}">
+                </div>
+                <div class="mb-3">
+                    <label for="hora" class="form-label">Hora</label>
+                    <input type="time" class="form-control" name="hora" value="{{data.hora|time:'H:i:s'}}">
+                </div>
+                <div class="mb-3">
+                    <label for="servicio" class="form-label">Servicio</label>
+                    <input type="text" class="form-control" name="servicio" value="{{data.servicio}}">
+                </div>
+                <div class="mb-3">
+                    <label for="empleado" class="form-label">Empleado</label>
+                    <input type="text" class="form-control" name="empleado" value="{{data.empleado}}">
+                </div>
+              <div class="d-flex justify-content-center">
+                {% if id %}
+                <button type="submit" class="btn btn-dark rounded-pill">Actualizar</button>
+                {% else %}
+                <button type="submit" class="btn btn-dark rounded-pill">Crear</button>
+                {% endif %}
+              </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
